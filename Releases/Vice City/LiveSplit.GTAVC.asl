@@ -226,7 +226,11 @@ startup
 	Action<string, bool> addMissionChain = (missions, defaultValue) => {
 		var parent = missions;
 		foreach (var address in vars.missionAddresses[missions]) {
-			settings.Add(address.Value, defaultValue, address.Value, parent);
+			bool isEnabled = defaultValue;
+			if (address.Value == "An Old Friend" || address.Value == "All Hands On Deck!") {
+				isEnabled = false; // Force disable the settings for these missions.
+			}
+			settings.Add(address.Value, isEnabled, address.Value, parent);
 			// Adding a separate check for stadium to be able to split for all three.
 			if (address.Value == "Hotring" || address.Value == "Bloodring" || address.Value == "Dirtring") {
 				vars.stadList.Add(address.Value);
@@ -254,7 +258,11 @@ startup
 			{
 				continue;
 			}
-			settings.Add(address.Value + " (start)", defaultValue, address.Value, parent + " (start)");
+			bool isEnabled = defaultValue;
+			if (/*address.Value == "An Old Friend" ||*/ address.Value == "The Party" || address.Value == "All Hands On Deck!") {
+				isEnabled = false; // Force disable the settings for these missions.
+			}
+			settings.Add(address.Value + " (start)", isEnabled, address.Value, parent + " (start)");
 			vars.missionStartList.Add(address.Value + " (start)");
 		}
 	};
