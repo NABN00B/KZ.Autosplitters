@@ -96,14 +96,11 @@ startup
 			{0x42162C, "The Chase"},
 			{0x421630, "Phnom Penh '86"},
 			{0x421634, "The Fastest Boat"},
-			{0x421638, "Supply & Demand"}
+			{0x421638, "Supply & Demand"},
+			{0x42163C, "Rub Out"}
 		}},
 		{"Kent Paul", new Dictionary<int, string> {
 			{0x421648, "Death Row"}
-		}},
-		{"Vercetti", new Dictionary<int, string> {
-			{0x42163C, "Rub Out"},
-			{0x4216B8, "Keep your Friends Close..."}
 		}},
 		{"Umberto Robina", new Dictionary<int, string> {
 			{0x4216DC, "Stunt Boat Challenge"},		
@@ -140,7 +137,8 @@ startup
 		{"Vercetti Mansion", new Dictionary<int, string> {
 			{0x4216A8, "Shakedown"},
 			{0x4216AC, "Bar Brawl"},
-			{0x4216B0, "Cop Land"}
+			{0x4216B0, "Cop Land"},
+			{0x4216B8, "Keep your Friends Close..."}
 		}},
 		{"Printworks", new Dictionary<int, string> {
 			{0x4216C0, "Spilling the Beans"},
@@ -297,7 +295,6 @@ startup
 	addMissionHeader("Diaz", true, "Diaz");
 	
 	addMissionHeader("Kent Paul", true, "Kent Paul");
-	addMissionHeader("Vercetti", true, "Vercetti");
 	addMissionHeader("Umberto Robina", false, "Umberto Robina");
 	addMissionHeader("Auntie Poulet", false, "Auntie Poulet");
 	
@@ -322,7 +319,6 @@ startup
 	addMissionHeaderStart("Diaz", true, "Diaz");
 	
 	addMissionHeaderStart("Kent Paul", true, "Kent Paul");
-	addMissionHeaderStart("Vercetti", true, "Vercetti");
 	addMissionHeaderStart("Umberto Robina", false, "Umberto Robina");
 	addMissionHeaderStart("Auntie Poulet", false, "Auntie Poulet");
 	
