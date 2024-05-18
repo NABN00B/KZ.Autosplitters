@@ -254,10 +254,6 @@ startup
 			{
 				continue;
 			}
-			if (address.Value.Contains("Rifle Range"))
-			{
-				continue;
-			}
 			bool isEnabled = defaultValue;
 			if (/*address.Value == "An Old Friend" ||*/ address.Value == "The Party" || address.Value == "All Hands On Deck!") {
 				isEnabled = false; // Force disable the settings for these missions.
