@@ -58,9 +58,9 @@ startup
 	// Collectible addresses
 	vars.collectibles = new Dictionary<string, int> {
 		{"Packages", 0x54ADD0},
-		{"Stunt Jumps", 0x421EDC},
 		{"Rampages", 0x42286C},
-		{"Robberies", 0x422A6C}
+		{"Robberies", 0x422A6C},
+		{"Stunt Jumps", 0x421EDC}
 	};
 	
 	// Assets/missions with only one objective (sans Kent Paul)
@@ -80,11 +80,6 @@ startup
 			{0x421608, "Jury Fury"},
 			{0x42160C, "Riot"}
 		}},
-		{"Avery", new Dictionary<int, string> {
-			{0x421650, "Four Iron"},
-			{0x421654, "Demolition Man"},
-			{0x421658, "Two Bit Hit"}
-		}},			
 	    {"Cortez", new Dictionary<int, string> {
 			{0x421614, "Treacherous Swine"},
 			{0x421618, "Mall Shootout"},
@@ -102,6 +97,18 @@ startup
 		{"Kent Paul", new Dictionary<int, string> {
 			{0x421648, "Death Row"}
 		}},
+		{"Mr. Black", new Dictionary<int, string> {
+			{0x421728, "Road Kill"},
+			{0x42172C, "Waste the Wife"},
+			{0x421730, "Autocide"},
+			{0x421734, "Check Out at the Check In"},
+			{0x421738, "Loose Ends"}
+		}},
+		{"Avery", new Dictionary<int, string> {
+			{0x421650, "Four Iron"},
+			{0x421654, "Demolition Man"},
+			{0x421658, "Two Bit Hit"}
+		}},
 		{"Umberto Robina", new Dictionary<int, string> {
 			{0x4216DC, "Stunt Boat Challenge"},		
 			{0x4216E0, "Cannon Fodder"},
@@ -113,26 +120,15 @@ startup
 			{0x4216F4, "Bombs Away!"},
 			{0x4216F8, "Dirty Lickin's"}
 		}},
-		{"Mitch Baker", new Dictionary<int, string> {
-			{0x4216CC, "Alloy Wheels of Steel"},
-			{0x4216D0, "Messing with the Man"},
-			{0x4216D4, "Hog Tied"}
-		}},
 		{"Love Fist", new Dictionary<int, string> {
 			{0x421700, "Love Juice"},
 			{0x421704, "Psycho Killer"},
 			{0x421708, "Publicity Tour"}
 		}},
-		{"Phil Cassidy", new Dictionary<int, string> {
-			{0x421678, "Gun Runner"},
-			{0x42167C, "Boomshine Saigon"}
-		}},
-		{"Mr. Black", new Dictionary<int, string> {
-			{0x421728, "Road Kill"},
-			{0x42172C, "Waste the Wife"},
-			{0x421730, "Autocide"},
-			{0x421734, "Check Out at the Check In"},
-			{0x421738, "Loose Ends"}
+		{"Mitch Baker", new Dictionary<int, string> {
+			{0x4216CC, "Alloy Wheels of Steel"},
+			{0x4216D0, "Messing with the Man"},
+			{0x4216D4, "Hog Tied"}
 		}},
 		{"Vercetti Mansion", new Dictionary<int, string> {
 			{0x4216A8, "Shakedown"},
@@ -144,20 +140,6 @@ startup
 			{0x4216C0, "Spilling the Beans"},
 			{0x4216C4, "Hit the Courier"},
 			{0x4216B4, "Cap the Collector"}
-		}},			
-		{"Sunshine Autos Imports", new Dictionary<int, string> {
-			{0x422414, "List 1"},
-			{0x422418, "List 2"},
-			{0x42241C, "List 3"},
-			{0x422420, "List 4"}
-		}},
-		{"Sunshine Autos Races", new Dictionary<int, string> {
-			{0x422B50, "Terminal Velocity"},
-			{0x422B54, "Ocean Drive"},
-			{0x422B58, "Border Run"},
-			{0x422B5C, "Capital Cruise"},
-			{0x422B60, "Tour!"},
-			{0x422B64, "VC Endurance"},
 		}},
 		{"Film Studio", new Dictionary<int, string> {
 			{0x421684, "Recruitment Drive"},
@@ -176,6 +158,24 @@ startup
 			{0x421668, "The Driver"},
 			{0x42166C, "The Job"}
 		}},
+		{"Phil Cassidy", new Dictionary<int, string> {
+			{0x421678, "Gun Runner"},
+			{0x42167C, "Boomshine Saigon"}
+		}},
+		{"Sunshine Autos Imports", new Dictionary<int, string> {
+			{0x422414, "List 1"},
+			{0x422418, "List 2"},
+			{0x42241C, "List 3"},
+			{0x422420, "List 4"}
+		}},
+		{"Sunshine Autos Races", new Dictionary<int, string> {
+			{0x422B50, "Terminal Velocity"},
+			{0x422B54, "Ocean Drive"},
+			{0x422B58, "Border Run"},
+			{0x422B5C, "Capital Cruise"},
+			{0x422B60, "Tour!"},
+			{0x422B64, "VC Endurance"},
+		}},
 		{"Stadium Events", new Dictionary<int, string> {
 			{0x422B74, "Hotring"},
 			{0x422B78, "Bloodring"},
@@ -188,22 +188,22 @@ startup
 			{0x422B40, "Downtown Chopper Checkpoint"}
 		}},
 		{"Off-Road Challenges", new Dictionary<int, string> {
-			{0x4217CC, "PCJ Playground"},
 			{0x4217FC, "Cone Crazy"},
-			{0x42182C, "Trial By Dirt"},
-			{0x421830, "Test Track"}
+			{0x4217CC, "PCJ Playground"},
+			{0x421830, "Test Track"},
+			{0x42182C, "Trial By Dirt"}
 		}},
 		{"RC Top-Fun", new Dictionary<int, string> {
-			{0x4291F0, "RC Raider"},
 			{0x429344, "RC Bandit"},
-			{0x429714, "RC Baron"}
+			{0x429714, "RC Baron"},
+			{0x4291F0, "RC Raider"}
 		}},
 		{"Vehicle Missions", new Dictionary<int, string> {
-			{0x422B34, "Paramedic (Level 12)"},
 			{0x422B3C, "Firefighter (Level 12)"},
+			{0x422B34, "Paramedic (Level 12)"},
 			{0x421894, "Pizza Boy (Level 10)"},
-			{0x422B38, "Vigilante (Level 12)"},
-			{0x421854, "Taxi (100 Fares)"}
+			{0x421854, "Taxi (100 Fares)"},
+			{0x422B38, "Vigilante (Level 12)"}
 		}},
 		{"Safehouses", new Dictionary<int, string> {
 			{0x4226D4, "1102 Washington Street"},
@@ -277,7 +277,6 @@ startup
 	settings.Add("Assets (end)", true, "Assets (end)");
 	settings.Add("Missions (start)", false, "Missions (start)");
 	settings.Add("Assets (start)", false, "Assets (start)");
-	settings.Add("Sunshine Autos", false, "Sunshine Autos", "Assets (end)");
 	settings.Add("Odd Jobs", false, "Odd Jobs");
 	settings.Add("Collectibles", false, "Collectibles");
 	settings.Add("No SSU Specific", false, "No SSU Specific");
@@ -294,18 +293,16 @@ startup
 	// Adding mission headers for mission end
 	settings.CurrentDefaultParent = "Missions (end)";
 	addMissionHeader("Ken Rosenberg", true, "Lawyer");
-	addMissionHeader("Avery", false, "Avery");
 	addMissionHeader("Cortez", true, "Cortez");
 	addMissionHeader("Diaz", true, "Diaz");
-	
 	addMissionHeader("Kent Paul", true, "Kent Paul");
+	
+	addMissionHeader("Mr. Black", false, "Mr. Black");
+	addMissionHeader("Avery", false, "Avery");
 	addMissionHeader("Umberto Robina", false, "Umberto Robina");
 	addMissionHeader("Auntie Poulet", false, "Auntie Poulet");
-	
-	addMissionHeader("Mitch Baker", false, "Mitch Baker");
 	addMissionHeader("Love Fist", false, "Love Fist");
-	addMissionHeader("Phil Cassidy", false, "Phil Cassidy");
-	addMissionHeader("Mr. Black", false, "Mr. Black");
+	addMissionHeader("Mitch Baker", false, "Mitch Baker");
 	
 	// Asset (end) headers (includes mansion and printworks).
 	settings.CurrentDefaultParent = "Assets (end)";
@@ -314,32 +311,14 @@ startup
 	addMissionHeader("Film Studio", false, "Film Studio");
 	addMissionHeader("Kaufman Cabs", false, "Kaufman Cabs");
 	addMissionHeader("Malibu", false, "Malibu");
+	addMissionHeader("Phil Cassidy", false, "Phil Cassidy");
 
-	// Adding mission headers for mission start
-	settings.CurrentDefaultParent = "Missions (start)";
-	addMissionHeaderStart("Ken Rosenberg", true, "Lawyer");
-	addMissionHeaderStart("Avery", false, "Avery");
-	addMissionHeaderStart("Cortez", true, "Cortez");
-	addMissionHeaderStart("Diaz", true, "Diaz");
-	
-	addMissionHeaderStart("Kent Paul", true, "Kent Paul");
-	addMissionHeaderStart("Umberto Robina", false, "Umberto Robina");
-	addMissionHeaderStart("Auntie Poulet", false, "Auntie Poulet");
-	
-	addMissionHeaderStart("Mitch Baker", false, "Mitch Baker");
-	addMissionHeaderStart("Love Fist", false, "Love Fist");
-	addMissionHeaderStart("Phil Cassidy", false, "Phil Cassidy");
-	addMissionHeaderStart("Mr. Black", false, "Mr. Black");
-	
-	// Asset (start) headers (includes mansion and printworks).
-	settings.CurrentDefaultParent = "Assets (start)";
-	addMissionHeaderStart("Vercetti Mansion", true, "Vercetti Mansion");
-	addMissionHeaderStart("Printworks", true, "Printworks");
-	addMissionHeaderStart("Film Studio", false, "Film Studio");
-	addMissionHeaderStart("Kaufman Cabs", false, "Kaufman Cabs");
-	addMissionHeaderStart("Malibu", false, "Malibu");
+	// Both SSA objectives
+	settings.Add("Sunshine Autos", false, "Sunshine Autos");
+	settings.CurrentDefaultParent = "Sunshine Autos";
+	addMissionHeader("Sunshine Autos Imports", false, "Imports");
+	addMissionHeader("Sunshine Autos Races", false, "Races");
 
-	
 	// Adding mission end settings for "mission2" list and storing in missionList.
 	foreach (var mission in vars.mission2)
 	{
@@ -351,9 +330,31 @@ startup
 		settings.Add(mission.Key, false, mission.Key);
 		vars.missionList.Add(mission.Key);
 	}
+
+	// Adding mission headers for mission start
+	settings.CurrentDefaultParent = "Missions (start)";
+	addMissionHeaderStart("Ken Rosenberg", true, "Lawyer");
+	addMissionHeaderStart("Cortez", true, "Cortez");
+	addMissionHeaderStart("Diaz", true, "Diaz");
+	addMissionHeaderStart("Kent Paul", true, "Kent Paul");
 	
-	// Adding mission start settings for singleton assets and storing in missionStartList.
+	addMissionHeaderStart("Mr. Black", false, "Mr. Black");
+	addMissionHeaderStart("Avery", false, "Avery");
+	addMissionHeaderStart("Umberto Robina", false, "Umberto Robina");
+	addMissionHeaderStart("Auntie Poulet", false, "Auntie Poulet");
+	addMissionHeaderStart("Love Fist", false, "Love Fist");
+	addMissionHeaderStart("Mitch Baker", false, "Mitch Baker");
+	
+	// Asset (start) headers (includes mansion and printworks).
 	settings.CurrentDefaultParent = "Assets (start)";
+	addMissionHeaderStart("Vercetti Mansion", true, "Vercetti Mansion");
+	addMissionHeaderStart("Printworks", true, "Printworks");
+	addMissionHeaderStart("Film Studio", false, "Film Studio");
+	addMissionHeaderStart("Kaufman Cabs", false, "Kaufman Cabs");
+	addMissionHeaderStart("Malibu", false, "Malibu");
+	addMissionHeaderStart("Phil Cassidy", false, "Phil Cassidy");
+		
+	// Adding mission start settings for singleton assets and storing in missionStartList.
 	foreach (var mission in vars.mission2)
 	{
 		var missionName = mission.Key;
@@ -380,11 +381,6 @@ startup
 	// SSA purchase
 	settings.Add("Sunshine Autos (start)", false, "Sunshine Autos (purchase)");
 	vars.missionStartList.Add("Sunshine Autos (start)");
-	
-	// Both SSA objectives
-	settings.CurrentDefaultParent = "Sunshine Autos";
-	addMissionHeader("Sunshine Autos Imports", false, "Imports");
-	addMissionHeader("Sunshine Autos Races", false, "Races");
 	
 	// And everything else
 	settings.CurrentDefaultParent = "Odd Jobs";
