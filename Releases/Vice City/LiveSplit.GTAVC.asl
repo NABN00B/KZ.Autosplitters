@@ -1,7 +1,7 @@
 // Original autosplitter by zoton2 and pitpo, contributions by MHMD_FVC.
-// Current iteration originally built by KZ_FREW, based off San Andreas script by tduva, memory addresses borrowed from lighnat0r
-// Contributions by iguaan
-// Maintained (feature parity) by hoXyy
+// Current iteration originally built by KZ_FREW, based off San Andreas script by tduva, memory addresses borrowed from Lighnat0r.
+// Contributions by iguaan, hoXyy, Anti and NABN00B.
+// Maintained (feature parity) by hoXyy.
 
 state("gta-vc")
 {
@@ -32,7 +32,7 @@ state("gta-vc", "Steam")
 	byte genLoad : 0x2F6759;
 }
 
-//state("testapp", "Steam") {} // needs properly implementing
+//state("testapp", "Steam") {} // Needs proper implementation.
 
 state("gta-vc", "Japanese")
 {
@@ -50,37 +50,40 @@ state("gta-vc", "Japanese")
 
 startup
 {
-	// Set the autosplitter refresh rate (lower = less CPU and less accurate, higher = more CPU usage and more accurate) default: 60
+	// Set the autosplitter refresh rate.
+	// Lower = less CPU and less accurate, higher = more CPU usage and more accurate, default: 60.
 	refreshRate = 30;
-	
-	// List of mission memory addresses (for 1.0, see below for where offsets get added)
-	
-	// Collectible addresses
+
+	// Memory Addresses
+	// ----------------------------------------
+	// For 1.0, see init{} for where offsets get added.
+
+	// Collectible addresses.
 	vars.collectibles = new Dictionary<string, int> {
 		{"Packages", 0x54ADD0},
 		{"Rampages", 0x42286C},
 		{"Robberies", 0x422A6C},
 		{"Stunt Jumps", 0x421EDC}
 	};
-	
-	// Assets/missions with only one objective (sans Kent Paul)
+
+	// Single objective asset/mission addresses (sans Kent Paul).
 	vars.mission2 = new Dictionary<string, int> {
 		{"Checkpoint Charlie (Boatyard)", 0x421BFC},
 		{"Distribution (Cherry Poppers)", 0x421C10},
 		{"Pole Position ($300 Spent)", 0x4223A0},
 		{"Rifle Range (45 Points)", 0x421430}
 	};
-	
-	// Main story/asset mission addresses
+
+	// Story, asset and side mission addresses.
 	vars.missionAddresses = new Dictionary<string, Dictionary<int, string>> {
 		{"Ken Rosenberg", new Dictionary<int, string> {
-	  		{0x4215F8, "An Old Friend"},
+			{0x4215F8, "An Old Friend"},
 			{0x421600, "The Party"},
 			{0x421604, "Back Alley Brawl"},
 			{0x421608, "Jury Fury"},
 			{0x42160C, "Riot"}
 		}},
-	    {"Cortez", new Dictionary<int, string> {
+			{"Cortez", new Dictionary<int, string> {
 			{0x421614, "Treacherous Swine"},
 			{0x421618, "Mall Shootout"},
 			{0x42161C, "Guardian Angels"},
@@ -110,10 +113,10 @@ startup
 			{0x421658, "Two Bit Hit"}
 		}},
 		{"Umberto Robina", new Dictionary<int, string> {
-			{0x4216DC, "Stunt Boat Challenge"},		
+			{0x4216DC, "Stunt Boat Challenge"},
 			{0x4216E0, "Cannon Fodder"},
 			{0x4216E4, "Naval Engagement"},
-			{0x4216E8, "Trojan Voodoo"}		
+			{0x4216E8, "Trojan Voodoo"}
 		}},
 		{"Auntie Poulet", new Dictionary<int, string> {
 			{0x4216F0, "Juju Scramble"},
@@ -181,7 +184,7 @@ startup
 			{0x422B78, "Bloodring"},
 			{0x42135C, "Dirtring"}
 		}},
-		{"Chopper Checkpoints", new Dictionary<int, string> { // some of these don't work
+		{"Chopper Checkpoints", new Dictionary<int, string> { // Some of these don't work.
 			{0x422B44, "Ocean Beach Chopper Checkpoint"},
 			{0x422B48, "Vice Point Chopper Checkpoint"},
 			{0x422B4C, "Little Haiti Chopper Checkpoint"},
@@ -215,13 +218,19 @@ startup
 			{0x4226CC, "Skumole Shack"}
 		}},
 	};
-	
+
+	// Collections
+	// ----------------------------------------
+
 	// Creating separate lists for easier checking later.
 	vars.missionList = new List<string>();
 	vars.missionStartList = new List<string>();
 	vars.collectibleList = new List<string>();
-	vars.stadList = new List<string>(); // stadium missions list
-	
+	vars.stadList = new List<string>(); // Stadium missions list
+
+	// Setting and Collection Filling Functions
+	// ----------------------------------------
+
 	// Inserts split into settings and adds the mission to our separate list.
 	Action<string, bool> addMissionChain = (missions, defaultValue) => {
 		var parent = missions;
@@ -238,7 +247,7 @@ startup
 			vars.missionList.Add(address.Value);
 		}
 	};
-	
+
 	// Inserts header (i.e. mission giver) into settings.
 	Action<string, bool, string> addMissionHeader = (missions, defaultValue, header) => {
 		var parent = missions;
@@ -246,32 +255,31 @@ startup
 		addMissionChain(missions, defaultValue);
 	};
 
-	// Copy of above functions for mission/asset start
+	// Copy of above functions for mission/asset start.
 	Action<string, bool> addMissionChainStart = (missions, defaultValue) => {
 		var parent = missions;
 		foreach (var address in vars.missionAddresses[missions]) {
-			if (address.Value == "An Old Friend") // don't need this
-			{
+			if (address.Value == "An Old Friend") { // Don't need this.
 				continue;
 			}
 			bool isEnabled = defaultValue;
-			if (/*address.Value == "An Old Friend" ||*/ address.Value == "The Party" || address.Value == "All Hands On Deck!") {
+			if (/* address.Value == "An Old Friend" || */ address.Value == "The Party" || address.Value == "All Hands On Deck!") {
 				isEnabled = false; // Force disable the settings for these missions.
 			}
 			settings.Add(address.Value + " (start)", isEnabled, address.Value, parent + " (start)");
 			vars.missionStartList.Add(address.Value + " (start)");
 		}
 	};
-	
+
 	Action<string, bool, string> addMissionHeaderStart = (missions, defaultValue, header) => {
 		var parent = missions;
 		settings.Add(parent + " (start)", defaultValue, header);
 		addMissionChainStart(missions, defaultValue);
 	};
-		
+
 	// Settings Page
-	// -------------
-	
+	// ----------------------------------------
+
 	// Parent settings.
 	settings.Add("Missions (end)", true, "Missions (end)");
 	settings.Add("Assets (end)", true, "Assets (end)");
@@ -280,8 +288,8 @@ startup
 	settings.Add("Odd Jobs", false, "Odd Jobs");
 	settings.Add("Collectibles", false, "Collectibles");
 	settings.Add("No SSU Specific", false, "No SSU Specific");
-	
-	//No SSU Specific stuff
+
+	// Settings for traditional Any% No SSU segment splits by Anti.
 	//settings.CurrentDefaultParent = "No SSU Specific";
 	settings.Add("Tswine", true, "Treacherous Swine Start", "No SSU Specific");
 	settings.Add("StarIsland", true, "The Chase Start", "No SSU Specific");
@@ -289,22 +297,22 @@ startup
 	settings.Add("DiazDed", true, "Diaz Dead", "No SSU Specific");
 	settings.Add("CopLandEnd", true, "Cop Land Fadeout", "No SSU Specific");
 	settings.Add("CTC", true, "Cap the Collector Start", "No SSU Specific");
-	
-	// Adding mission headers for mission end
+
+	// Adding mission headers for mission end.
 	settings.CurrentDefaultParent = "Missions (end)";
 	addMissionHeader("Ken Rosenberg", true, "Lawyer");
 	addMissionHeader("Cortez", true, "Cortez");
 	addMissionHeader("Diaz", true, "Diaz");
 	addMissionHeader("Kent Paul", true, "Kent Paul");
-	
+
 	addMissionHeader("Mr. Black", false, "Mr. Black");
 	addMissionHeader("Avery", false, "Avery");
 	addMissionHeader("Umberto Robina", false, "Umberto Robina");
 	addMissionHeader("Auntie Poulet", false, "Auntie Poulet");
 	addMissionHeader("Love Fist", false, "Love Fist");
 	addMissionHeader("Mitch Baker", false, "Mitch Baker");
-	
-	// Asset (end) headers (includes mansion and printworks).
+
+	// Asset (end) headers (includes Mansion and Printworks).
 	settings.CurrentDefaultParent = "Assets (end)";
 	addMissionHeader("Vercetti Mansion", true, "Vercetti Mansion");
 	addMissionHeader("Printworks", true, "Printworks");
@@ -313,7 +321,7 @@ startup
 	addMissionHeader("Malibu", false, "Malibu");
 	addMissionHeader("Phil Cassidy", false, "Phil Cassidy");
 
-	// Both SSA objectives
+	// Adding headers for both SSA objectives.
 	settings.Add("Sunshine Autos", false, "Sunshine Autos");
 	settings.CurrentDefaultParent = "Sunshine Autos";
 	addMissionHeader("Sunshine Autos Imports", false, "Imports");
@@ -323,7 +331,7 @@ startup
 	foreach (var mission in vars.mission2)
 	{
 		settings.CurrentDefaultParent = "Assets (end)";
-		// Seperate check for Rifle Range to categorize it appropriately
+		// Seperate check for Rifle Range to categorize it appropriately.
 		if (mission.Key == "Rifle Range (45 Points)") {
 			settings.CurrentDefaultParent = "Odd Jobs";
 		}
@@ -331,21 +339,21 @@ startup
 		vars.missionList.Add(mission.Key);
 	}
 
-	// Adding mission headers for mission start
+	// Adding mission headers for mission start.
 	settings.CurrentDefaultParent = "Missions (start)";
 	addMissionHeaderStart("Ken Rosenberg", true, "Lawyer");
 	addMissionHeaderStart("Cortez", true, "Cortez");
 	addMissionHeaderStart("Diaz", true, "Diaz");
 	addMissionHeaderStart("Kent Paul", true, "Kent Paul");
-	
+
 	addMissionHeaderStart("Mr. Black", false, "Mr. Black");
 	addMissionHeaderStart("Avery", false, "Avery");
 	addMissionHeaderStart("Umberto Robina", false, "Umberto Robina");
 	addMissionHeaderStart("Auntie Poulet", false, "Auntie Poulet");
 	addMissionHeaderStart("Love Fist", false, "Love Fist");
 	addMissionHeaderStart("Mitch Baker", false, "Mitch Baker");
-	
-	// Asset (start) headers (includes mansion and printworks).
+
+	// Asset (start) headers (includes Mansion and Printworks).
 	settings.CurrentDefaultParent = "Assets (start)";
 	addMissionHeaderStart("Vercetti Mansion", true, "Vercetti Mansion");
 	addMissionHeaderStart("Printworks", true, "Printworks");
@@ -353,7 +361,7 @@ startup
 	addMissionHeaderStart("Kaufman Cabs", false, "Kaufman Cabs");
 	addMissionHeaderStart("Malibu", false, "Malibu");
 	addMissionHeaderStart("Phil Cassidy", false, "Phil Cassidy");
-		
+
 	// Adding mission start settings for singleton assets and storing in missionStartList.
 	foreach (var mission in vars.mission2)
 	{
@@ -361,7 +369,7 @@ startup
 		if (missionName == "Rifle Range (45 Points)") {
 			continue; // Skip Rifle Range.
 		}
-		
+
 		var splitName = missionName;
 		// Set the correct names for Pole Position.
 		if (missionName == "Pole Position ($300 Spent)") {
@@ -375,60 +383,63 @@ startup
 				splitName = missionName.Substring(0, paranthesisIndex);
 			}
 		}
+
 		settings.Add(splitName + " (start)", false, missionName);
 		vars.missionStartList.Add(splitName + " (start)");
 	}
-	// SSA purchase
+	// Adding SSA purchase setting and storing in missionStartList.
 	settings.Add("Sunshine Autos (start)", false, "Sunshine Autos (purchase)");
 	vars.missionStartList.Add("Sunshine Autos (start)");
-	
-	// And everything else
+
+	// Adding mission end setting for every other side mission.
 	settings.CurrentDefaultParent = "Odd Jobs";
 	addMissionHeader("Stadium Events", false, "Stadium Events");
-	settings.Add("stadAll", false, "Stadium Events (All Done)", "Stadium Events"); // setting used later to split for all 3 stadium missions
+	settings.Add("stadAll", false, "Stadium Events (All Done)", "Stadium Events"); // Setting used later to split for all 3 stadium missions.
 	addMissionHeader("Chopper Checkpoints", false, "Chopper Checkpoints");
 	addMissionHeader("Off-Road Challenges", false, "Off-Road Challenges");
 	addMissionHeader("RC Top-Fun", false, "RC Top-Fun");
 	addMissionHeader("Vehicle Missions", false, "Vehicle Missions");
-	
+
 	// Collectibles (Packages, Rampages, USJs, Robberies, and Properties/Safehouses).
 	settings.CurrentDefaultParent = "Collectibles";
 	addMissionHeader("Safehouses", false, "Safehouses");
 	foreach (var item in vars.collectibles)
 	{
 		// Add seperate settings depending on player preference. Split for each collectible gathered, or when all are gathered.
-		settings.Add(item.Key+"All", false, item.Key+" (All Done)");
-		settings.Add(item.Key+"Each", false, item.Key+" (Each)");
+		settings.Add(item.Key + "All", false, item.Key + " (All Done)");
+		settings.Add(item.Key + "Each", false, item.Key + " (Each)");
 		vars.collectibleList.Add(item.Key);
 	}
-	settings.CurrentDefaultParent = null;	
-	
+
 	// Setting for final split of Any%.
+	settings.CurrentDefaultParent = null;
 	settings.Add("btgFinalSplit", false, "Any% Final Split");
 	settings.SetToolTip("btgFinalSplit", "Splits once you lose control on \"Keep Your Friends Close\".");
-	
-	// State checking
-	// --------------
-	
+
+	// State Checking
+	// ----------------------------------------
+
 	// Used later to track last loadtime.
 	vars.lastLoad = 0;
-	
-	// Used to prevent splitting if the game was loaded recently
+
+	// Used to prevent splitting if the game was loaded recently.
 	vars.waiting = false;
-	
+
 	// Setting a check later for timer phase.
-	vars.PrevPhase = null;
-	
+	vars.prevPhase = null;
+
 	// Used later to count stadium missions.
 	vars.stadAllCount = 0;
-	
 }
 
 init
 {
 	vars.offset = 0;
-	vars.split = new List<string>(); // to keep a list of split splits.
-	
+	vars.split = new List<string>(); // To keep a list of split splits.
+
+	// Version Detection
+	// ----------------------------------------
+
 	// Detects current game version if Steam.
 	if (modules.First().ModuleMemorySize == 6905856)
 	{
@@ -441,7 +452,7 @@ init
 		version = "Steam";
 		vars.offset = -0xFF8;
 	}
-	
+
 	// Detects current game version if RU Steam (also maybe detects 1.1?).
 	// Russian Steam version uses the same stuff as 1.1.
 	else if (modules.First().ModuleMemorySize == 6840320)
@@ -449,7 +460,7 @@ init
 		version = "1.1";
 		vars.offset = 8;
 	}
-	
+
 	else { //
 		// Detects current game version if not Steam.
 		switch ((int)current.gameVersion)
@@ -469,94 +480,98 @@ init
 		}
 	}
 	
+	// Memory Watchers
+	// ----------------------------------------
+	
 	// Adds mission memory addresses (with the correct offset) to the watcher list.
 	vars.memoryWatchers = new MemoryWatcherList();
 
 	foreach (var address in vars.missionAddresses) {
 		foreach (var m in address.Value) {
-					if (address.Key == "RC Top-Fun" && vars.offset == -0x2FF8) { // RC mission offsets are different from all other addresses in JP
-					vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key+vars.offset+8)) { Name = m.Value });
-					}
-					else {
-					vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key+vars.offset)) { Name = m.Value });
-					}
+			if (address.Key == "RC Top-Fun" && vars.offset == -0x2FF8) { // RC mission offsets are different from all other addresses in JP.
+			vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key + vars.offset + 8)) { Name = m.Value });
+			}
+			else {
+			vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key + vars.offset)) { Name = m.Value });
+			}
 		}
 	}
-	
-	// More...
+
+	// Standalone mission addresses...
 	foreach (var address in vars.mission2) {
-		vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(address.Value+vars.offset)) { Name = address.Key });
+		vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(address.Value + vars.offset)) { Name = address.Key });
 	}
-	
-	// ...and even more.
+
+	// ...and collectible addresses.
 	foreach (var item in vars.collectibles) {
 		var type = item.Key;
-		var addr = item.Value+vars.offset;
+		var addr = item.Value + vars.offset;
 		vars.memoryWatchers.Add(
 			new MemoryWatcher<int>(
 				new DeepPointer(addr)
 			) { Name = type }
 		);
 	}
-	
+
 	// Add correct memory address for the "game state" to the watcher list.
-	var gameStateAddress = (version == "Japanese") ? 0x5B2F18 : 0x5B5F08+vars.offset;
+	var gameStateAddress = (version == "Japanese") ? 0x5B2F18 : 0x5B5F08 + vars.offset;
 	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(gameStateAddress)) { Name = "gameState" });
-	
+
 	// Japanese game state is shifted by +4 (due to more intro movies) so needs to be taken into account later.
 	vars.gameStateShift = (version == "Japanese") ? 4 : 0;
-	
+
 	// Used to know when the player loads a saved game. 0 if so and 1 if not.
 	// This is needed so the timer doesn't start if you load a save game after the initial boot up.
-	vars.memoryWatchers.Add(new MemoryWatcher<byte>(new DeepPointer(0x574B74+vars.offset)) { Name = "notLoadingCheck" });
-	
+	vars.memoryWatchers.Add(new MemoryWatcher<byte>(new DeepPointer(0x574B74 + vars.offset)) { Name = "notLoadingCheck" });
+
 	// Memory addresses used for the final split of Any% (see below).
-	vars.memoryWatchers.Add(new MemoryWatcher<byte>(new DeepPointer(0x426104+vars.offset)) { Name = "kyfc1" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x425DAC+vars.offset)) { Name = "kyfc2" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x426100+vars.offset)) { Name = "kyfc3" });
-	
+	vars.memoryWatchers.Add(new MemoryWatcher<byte>(new DeepPointer(0x426104 + vars.offset)) { Name = "kyfc1" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x425DAC + vars.offset)) { Name = "kyfc2" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x426100 + vars.offset)) { Name = "kyfc3" });
+
 	// This is all "split at start of mission" address tracking.
 	// ---------------------------------------------------------
-	
-	var missionNameAddress = (version == "Japanese") ? 0x38A008 : 0x38D000+vars.offset; 
+
+	var missionNameAddress = (version == "Japanese") ? 0x38A008 : 0x38D000 + vars.offset; 
 	vars.memoryWatchers.Add(new StringWatcher(new DeepPointer(missionNameAddress), 64) { Name = "missionName"});
 
 /* 	// A list of names and memory addresses for OMFs, both the main one and ones for side missions and such.
 	vars.OMFList = new List<string> {"OMFParamedic", "OMFFirefighter", "OMFTaxi", "OMFRampage", "OMFPhonecall", "OMFSaveGame"};
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x421764+vars.offset)) { Name = "OMF" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x42177C+vars.offset)) { Name = "OMFParamedic" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x421784+vars.offset)) { Name = "OMFFirefighter" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x421768+vars.offset)) { Name = "OMFTaxi" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x3E2B2C+vars.offset)) { Name = "OMFRampage" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x4224F0+vars.offset)) { Name = "OMFPhonecall" });
-	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x60D228+vars.offset)) { Name = "OMFSaveGame" });
-	
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x421764 + vars.offset)) { Name = "OMF" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x42177C + vars.offset)) { Name = "OMFParamedic" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x421784 + vars.offset)) { Name = "OMFFirefighter" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x421768 + vars.offset)) { Name = "OMFTaxi" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x3E2B2C + vars.offset)) { Name = "OMFRampage" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x4224F0 + vars.offset)) { Name = "OMFPhonecall" });
+	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(0x60D228 + vars.offset)) { Name = "OMFSaveGame" });
+
 	// This address will be 0 if vigilante is currently running or it was never started, or 1 if started once and not running.
-	var OMFVigilanteAddress = (version == "Japanese") ? 0x424E68 : 0x427E58+vars.offset;
+	var OMFVigilanteAddress = (version == "Japanese") ? 0x424E68 : 0x427E58 + vars.offset;
 	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(OMFVigilanteAddress)) { Name = "OMFVigilante" });
-	
+
 	// This address will be 0 if vigilante has never been started, -100 on start and then a high number that decreases while on vigilante.
 	// The high number will then freeze if vigilante is cancelled.
-	var VigilanteTimerAddress = (version == "Japanese") ? 0x424E60 : 0x427E50+vars.offset;
+	var VigilanteTimerAddress = (version == "Japanese") ? 0x424E60 : 0x427E50 + vars.offset;
 	vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(VigilanteTimerAddress)) { Name = "VigilanteTimer" }); */
 	// End "split at start of mission" address tracking.
 	// ---------------------------------------------------------
-	
+
 	// Watch for load/saving to prevent splitting after load (this can happen if memory addresses change)
-	vars.memoryWatchers.Add(new MemoryWatcher<bool>(new DeepPointer(0x38D724+vars.offset)) { Name = "Loading" });
+	vars.memoryWatchers.Add(new MemoryWatcher<bool>(new DeepPointer(0x38D724 + vars.offset)) { Name = "Loading" });
 }
 
 update
 {
 	// Disables all the action blocks below in the code if the user is using an unsupported version.
-	if (version == "")
+	if (version == "") {
 		return false;
-		
+	}
+
 	// Update all of the memory readings for the mission memory addresses.
 	vars.memoryWatchers.UpdateAll(game);
-	
+
 	// Reset some variables when the timer is started, so we don't need to rely on the start action in this script.
-	if (timer.CurrentPhase != vars.PrevPhase)
+	if (timer.CurrentPhase != vars.prevPhase)
 	{
 		if (timer.CurrentPhase == TimerPhase.NotRunning)
 		{
@@ -564,20 +579,19 @@ update
 			vars.queuedSplit = false;
 			vars.DebugOutput = ("Cleared completed splits");
 		}
-		vars.PrevPhase = timer.CurrentPhase;
+		vars.prevPhase = timer.CurrentPhase;
 	}
-
 }
 
 split
 {
 	vars.doSplit = false;
-	
+
 	if (vars.memoryWatchers["Loading"].Current) {
 		vars.lastLoad = Environment.TickCount;
 		return false;
 	}
-	
+
 	if (Environment.TickCount - vars.lastLoad < 1000) {
 		// Prevent splitting shortly after loading from a save, since this can
 		// sometimes occur because memory values change
@@ -592,20 +606,20 @@ split
 	{
 		//print("Done waiting..");
 		vars.waiting = false;
-	}	
-	
+	}
+
 	// Goes through all the missions in the list, checks if their setting is enabled, if the mission has just been passed
 	// and also if we haven't split for this mission yet. If so, splits.
 	foreach (var mission in vars.missionList) {
-		// seperate check if we are splitting for all stadium missions.
+		// Seperate check if we are splitting for all stadium missions.
 		if (settings["stadAll"]) {
 			foreach (var stadEvent in vars.stadList) {
 				if (vars.memoryWatchers[stadEvent].Current > vars.memoryWatchers[stadEvent].Old && !vars.split.Contains(stadEvent)) {
+					// Add the completed stadium mission to splits list, and increment total counter by 1.
 					vars.split.Add(stadEvent);
-					// add the completed stadium mission to splits list, and increment total counter by 1.
 					vars.stadAllCount = vars.stadAllCount + 1;
 					if (vars.stadAllCount == 3) {
-						// when all 3 are done, split!
+						// When all 3 are done, split!
 						vars.doSplit = true;
 					}
 				}
@@ -617,55 +631,55 @@ split
 		}
 	}
 
-	// split on mission start stuff
+	// Mission start splitting.
 	foreach (var mission in vars.missionStartList) {
 		var missionWatcher = vars.memoryWatchers["missionName"].Current;
 		var missionName = mission.Replace(" (start)", "");
 		if (version == "Japanese" && missionName == "Distribution") {
-			missionName = "Ice Cream Mission"; // Different title in Japanese.
+			missionName = "Ice Cream Mission"; // Different title in JP.
 		}
 		if (settings[mission] && vars.memoryWatchers["missionName"].Current != vars.memoryWatchers["missionName"].Old && missionWatcher == missionName && !vars.split.Contains(mission)) {
 			vars.split.Add(mission);
 			vars.doSplit = true;
 		}
 	}
-	
-	// collectible splitting
+
+	// Collectible splitting.
 	foreach (var item in vars.collectibleList) {
 		var cvalue = vars.memoryWatchers[item.ToString()];
 		if (cvalue.Current > cvalue.Old) {
-			if (settings[item+"All"]) // adjusting the max count for each collectible type based on what we want to split.
+			if (settings[item + "All"]) // Adjusting the max count for each collectible type based on what we want to split.
 			{
 				int max = 15;
-				if (item == "Rampages")	{
+				if (item == "Rampages") {
 					max = 35;
 				}
 				if (item == "Stunt Jumps") {
 					max = 36;
 				}
-				if (item == "Packages")	{
+				if (item == "Packages") {
 					max = 100;
 				}
-				if (cvalue.Current == max && cvalue.Old == max-1) {
-					var splitName = item+" "+cvalue.Current;
+				if (cvalue.Current == max && cvalue.Old == max - 1) {
+					var splitName = item + " " + cvalue.Current;
 					if (!vars.split.Contains(splitName)) {
 						vars.split.Add(splitName);
 						vars.doSplit = true;
 					}
 				}
 			}
-			if (settings[item+"Each"]) { // if it's each, add the collectible to splits list and try to split.
-					var splitName = item+" "+cvalue.Current;
-					if (!vars.split.Contains(splitName)) {
-						vars.split.Add(splitName);
-						vars.doSplit = true;
-					}				
+			if (settings[item + "Each"]) { // If it's each, add the collectible to splits list and try to split.
+				var splitName = item + " " + cvalue.Current;
+				if (!vars.split.Contains(splitName)) {
+					vars.split.Add(splitName);
+					vars.doSplit = true;
+				}
 			}
 		}
 	}
-	
-	//no ssu splits
-	if ((settings["Tswine"]) && (!vars.split.Contains("Tswine"))) {		
+
+	// Traditional Any% No SSU segment splits by Anti.
+	if ((settings["Tswine"]) && (!vars.split.Contains("Tswine"))) {
 		if ((current.camX + " " + current.camY + " " + current.camZ == "-229.438 -1364.204 12.607")) {
 			if(current.tswineCall) {
 				vars.split.Add("Tswine");
@@ -707,7 +721,7 @@ split
 			}
 		}
 	}
-	
+
 /* 	// more OMFSplit stuff.
 	// If there is a queued split and the OMF has changed to 1, then check to see if we should split now or not.
 	if (settings["OMFSplit"] && vars.queuedSplit && vars.memoryWatchers["OMF"].Current > vars.memoryWatchers["OMF"].Old) {
@@ -739,7 +753,7 @@ split
 		vars.split.Add("btgFinalSplit");
 		vars.doSplit = true;
 	}
-	
+
 	if (vars.doSplit) {
 		return true;
 	}
@@ -748,17 +762,17 @@ split
 start
 {
 	// Starts the splits when the new game load has been completed (and is not a save).
-	return vars.memoryWatchers["gameState"].Old == 8+vars.gameStateShift
-	&& vars.memoryWatchers["gameState"].Current == 9+vars.gameStateShift
-	&& vars.memoryWatchers["notLoadingCheck"].Current == 1;
+	return vars.memoryWatchers["gameState"].Old == 8 + vars.gameStateShift
+		&& vars.memoryWatchers["gameState"].Current == 9 + vars.gameStateShift
+		&& vars.memoryWatchers["notLoadingCheck"].Current == 1;
 }
 
 reset
 {
 	// Resets the timer when the new game load starts but only if the timer isn't over 19 seconds yet.
-	return vars.memoryWatchers["gameState"].Old == 9+vars.gameStateShift
-	&& vars.memoryWatchers["gameState"].Current == 8+vars.gameStateShift
-	&& TimeSpan.Parse(timer.CurrentTime.RealTime.ToString()).TotalSeconds > 19;
+	return vars.memoryWatchers["gameState"].Old == 9 + vars.gameStateShift
+		&& vars.memoryWatchers["gameState"].Current == 8 + vars.gameStateShift
+		&& TimeSpan.Parse(timer.CurrentTime.RealTime.ToString()).TotalSeconds > 19;
 }
 
 isLoading
