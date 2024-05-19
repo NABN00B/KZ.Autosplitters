@@ -290,13 +290,13 @@ startup
 	settings.Add("No SSU Specific", false, "No SSU Specific");
 
 	// Settings for traditional Any% No SSU segment splits by Anti.
-	//settings.CurrentDefaultParent = "No SSU Specific";
-	settings.Add("Tswine", true, "Treacherous Swine Start", "No SSU Specific");
-	settings.Add("StarIsland", true, "The Chase Start", "No SSU Specific");
-	settings.Add("SYS", true, "Sir Yes Sir Start", "No SSU Specific");
-	settings.Add("DiazDed", true, "Diaz Dead", "No SSU Specific");
-	settings.Add("CopLandEnd", true, "Cop Land Fadeout", "No SSU Specific");
-	settings.Add("CTC", true, "Cap the Collector Start", "No SSU Specific");
+	settings.CurrentDefaultParent = "No SSU Specific";
+	settings.Add("Tswine", true, "Treacherous Swine Start");
+	settings.Add("StarIsland", true, "The Chase Start");
+	settings.Add("SYS", true, "Sir Yes Sir Start");
+	settings.Add("DiazDed", true, "Diaz Dead");
+	settings.Add("CopLandEnd", true, "Cop Land Fadeout");
+	settings.Add("CTC", true, "Cap the Collector Start");
 
 	// Adding mission headers for mission end.
 	settings.CurrentDefaultParent = "Missions (end)";
