@@ -583,14 +583,14 @@ split
 		// sometimes occur because memory values change
 		if (!vars.waiting)
 		{
-			print("Wait..");
+			//print("Wait..");
 			vars.waiting = true;
 		}
 		return false;
 	}
 	if (vars.waiting)
 	{
-		print("Done waiting..");
+		//print("Done waiting..");
 		vars.waiting = false;
 	}	
 	
@@ -717,7 +717,7 @@ split
 		foreach (var sideMissionOMF in vars.OMFList) {
 			if (vars.memoryWatchers[sideMissionOMF].Current > vars.memoryWatchers[sideMissionOMF].Old) {
 				vars.sideMissionOM = true;
-				print("skipping split because side mission");
+				//print("skipping split because side mission");
 			}
 		}
 		
@@ -725,7 +725,7 @@ split
 		if (vars.memoryWatchers["OMFVigilante"].Current < vars.memoryWatchers["OMFVigilante"].Old
 			|| (vars.memoryWatchers["VigilanteTimer"].Current == -100 && vars.memoryWatchers["VigilanteTimer"].Old != -100)) {
 			vars.sideMissionOM = true;
-			print("skipping split because side mission");
+			//print("skipping split because side mission");
 		}
 		
 		// If the checks above returned nothing, then we will split.
