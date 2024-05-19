@@ -413,7 +413,7 @@ startup
 
 	// Setting for final split of Any%.
 	settings.CurrentDefaultParent = null;
-	settings.Add("btgFinalSplit", false, "Any% Final Split");
+	settings.Add("btgFinalSplit", true, "Any% Final Split");
 	settings.SetToolTip("btgFinalSplit", "Splits once you lose control on \"Keep Your Friends Close\".");
 
 	// State Checking
