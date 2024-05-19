@@ -340,7 +340,7 @@ startup
 	addMissionHeaderStart("Malibu", false, "Malibu");
 
 	
-	// Adding settings for "mission2" list and storing in missionList.
+	// Adding mission end settings for "mission2" list and storing in missionList.
 	foreach (var mission in vars.mission2)
 	{
 		settings.CurrentDefaultParent = "Assets (end)";
@@ -351,6 +351,35 @@ startup
 		settings.Add(mission.Key, false, mission.Key);
 		vars.missionList.Add(mission.Key);
 	}
+	
+	// Adding mission start settings for singleton assets and storing in missionStartList.
+	settings.CurrentDefaultParent = "Assets (start)";
+	foreach (var mission in vars.mission2)
+	{
+		var missionName = mission.Key;
+		if (missionName == "Rifle Range (45 Points)") {
+			continue; // Skip Rifle Range.
+		}
+		
+		var splitName = missionName;
+		// Set the correct names for Pole Position.
+		if (missionName == "Pole Position ($300 Spent)") {
+			missionName = "Pole Position (entry)";
+			splitName = "The 'Pole Position Club'";
+		}
+		// Strip the property name. We don't want it in the split/setting name.
+		else {
+			var paranthesisIndex = splitName.LastIndexOf(" (", splitName.Length - 1);
+			if (paranthesisIndex > -1) {
+				splitName = missionName.Substring(0, paranthesisIndex);
+			}
+		}
+		settings.Add(splitName + " (start)", false, missionName);
+		vars.missionStartList.Add(splitName + " (start)");
+	}
+	// SSA purchase
+	settings.Add("Sunshine Autos (start)", false, "Sunshine Autos (purchase)");
+	vars.missionStartList.Add("Sunshine Autos (start)");
 	
 	// Both SSA objectives
 	settings.CurrentDefaultParent = "Sunshine Autos";
@@ -596,19 +625,8 @@ split
 	foreach (var mission in vars.missionStartList) {
 		var missionWatcher = vars.memoryWatchers["missionName"].Current;
 		var missionName = mission.Replace(" (start)", "");
-		// Remove property names from splits
-		if (missionName.Contains("(Cherry Poppers)"))
-		{
-			missionName = "Distribution";
-		}
-		if (missionName.Contains("(Boatyard)"))
-		{
-			missionName = "Checkpoint Charlie";
-		}
-		if (version == "Japanese") {
-			if (missionName == "Distribution") {
-				missionName = "Ice Cream Mission";
-			}
+		if (version == "Japanese" && missionName == "Distribution") {
+			missionName = "Ice Cream Mission"; // Different title in Japanese.
 		}
 		if (settings[mission] && vars.memoryWatchers["missionName"].Current != vars.memoryWatchers["missionName"].Old && missionWatcher == missionName && !vars.split.Contains(mission)) {
 			vars.split.Add(mission);
