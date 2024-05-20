@@ -40,12 +40,12 @@ state("gta-vc", "Japanese")
 	int loadSaveLoad : 0x38A72C;
 	int replayLoad : 0x387734;
 	byte genLoad : 0x2F4759;
-	float camX : "gta-vc.exe", 0x003006B0;
-	float camY : "gta-vc.exe", 0x003006B4;
-	float camZ : "gta-vc.exe", 0x003006B8;
-	bool tswineCall : "gta-vc.exe", 0x0041F460;
-	bool sysCall : "gta-vc.exe", 0x0041F4AC;
-	bool ctcCall: "gta-vc.exe", 0x0041F430;
+	float camX : 0x3006B0;
+	float camY : 0x3006B4;
+	float camZ : 0x3006B8;
+	bool tswineCall : 0x41F460;
+	bool sysCall : 0x41F4AC;
+	bool ctcCall: 0x41F430;
 }
 
 startup
@@ -663,45 +663,48 @@ split
 	}
 
 	// Traditional Any% No SSU segment splits by Anti.
-	if ((settings["Tswine"]) && (!vars.split.Contains("Tswine"))) {
-		if ((current.camX + " " + current.camY + " " + current.camZ == "-229.438 -1364.204 12.607")) {
-			if(current.tswineCall) {
-				vars.split.Add("Tswine");
+	// Remove this check for JP once support is properly implemented in other versions.
+	if (version == "Japanese") {
+		if ((settings["Tswine"]) && (!vars.split.Contains("Tswine"))) {
+			if ((current.camX + " " + current.camY + " " + current.camZ == "-229.438 -1364.204 12.607")) {
+				if(current.tswineCall) {
+					vars.split.Add("Tswine");
+					vars.doSplit = true;
+				}
+			}
+		}
+		if ((settings["StarIsland"]) && (!vars.split.Contains("StarIsland"))) {
+			if ((current.camX + " " + current.camY + " " + current.camZ == "-381.923 -473.339 48.904")) {
+				vars.split.Add("StarIsland");
 				vars.doSplit = true;
 			}
 		}
-	}
-	if ((settings["StarIsland"]) && (!vars.split.Contains("StarIsland"))) {
-		if ((current.camX + " " + current.camY + " " + current.camZ == "-381.923 -473.339 48.904")) {
-			vars.split.Add("StarIsland");
-			vars.doSplit = true;
+		if ((settings["SYS"]) && (!vars.split.Contains("SYS"))) {
+			if ((current.camX + " " + current.camY + " " + current.camZ == "-229.438 -1364.204 12.607")) {
+				if(current.sysCall) {
+					vars.split.Add("SYS");
+					vars.doSplit = true;
+				}
+			}
 		}
-	}
-	if ((settings["SYS"]) && (!vars.split.Contains("SYS"))) {
-		if ((current.camX + " " + current.camY + " " + current.camZ == "-229.438 -1364.204 12.607")) {
-			if(current.sysCall) {
-				vars.split.Add("SYS");
+		if ((settings["DiazDed"]) && (!vars.split.Contains("DiazDed"))) {
+			if ((current.camX + " " + current.camY == "-393.7734 -555.7239") && (current.camZ > 26.9) && (current.camZ < 27)) {
+				vars.split.Add("DiazDed");
 				vars.doSplit = true;
 			}
 		}
-	}
-	if ((settings["DiazDed"]) && (!vars.split.Contains("DiazDed"))) {
-		if ((current.camX + " " + current.camY == "-393.7734 -555.7239") && (current.camZ > 26.9) && (current.camZ < 27)) {
-			vars.split.Add("DiazDed");
-			vars.doSplit = true;
-		}
-	}
-	if ((settings["CopLandEnd"]) && (!vars.split.Contains("CopLandEnd"))) {
-		if ((current.camX + " " + current.camY + " " + current.camZ == "-369.1 -467.9 22.7")) {
-			vars.split.Add("CopLandEnd");
-			vars.doSplit = true;
-		}
-	}
-	if ((settings["CTC"]) && (!vars.split.Contains("CTC"))) {
-		if ((current.camX + " " + current.camY + " " + current.camZ == "-1039.093 -293.828 27.81")) {
-			if(current.ctcCall) {
-				vars.split.Add("CTC");
+		if ((settings["CopLandEnd"]) && (!vars.split.Contains("CopLandEnd"))) {
+			if ((current.camX + " " + current.camY + " " + current.camZ == "-369.1 -467.9 22.7")) {
+				vars.split.Add("CopLandEnd");
 				vars.doSplit = true;
+			}
+		}
+		if ((settings["CTC"]) && (!vars.split.Contains("CTC"))) {
+			if ((current.camX + " " + current.camY + " " + current.camZ == "-1039.093 -293.828 27.81")) {
+				if(current.ctcCall) {
+					vars.split.Add("CTC");
+					vars.doSplit = true;
+				}
 			}
 		}
 	}
@@ -738,7 +741,7 @@ split
 		vars.doSplit = true;
 	}
 
-	// Finally, if any of the split conditions had been met, trigger the split action.
+	// Finally, if any of the split conditions have been met, trigger the split action.
 	return vars.doSplit;
 }
 
