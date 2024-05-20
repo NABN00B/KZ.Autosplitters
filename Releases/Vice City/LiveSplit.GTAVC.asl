@@ -259,8 +259,8 @@ startup
 	Action<string, bool> addMissionChainStart = (missions, defaultValue) => {
 		var parent = missions;
 		foreach (var address in vars.missionAddresses[missions]) {
-			if (address.Value == "An Old Friend") { // Don't need this.
-				continue;
+			if (address.Value == "An Old Friend") {
+				continue; // Don't need this.
 			}
 			bool isEnabled = defaultValue;
 			if (/* address.Value == "An Old Friend" || */ address.Value == "The Party" || address.Value == "All Hands On Deck!") {
@@ -328,8 +328,7 @@ startup
 	addMissionHeader("Sunshine Autos Races", false, "Races");
 
 	// Adding mission end settings for "mission2" list and storing in missionList.
-	foreach (var mission in vars.mission2)
-	{
+	foreach (var mission in vars.mission2) {
 		settings.CurrentDefaultParent = "Assets (end)";
 		// Seperate check for Rifle Range to categorize it appropriately.
 		if (mission.Key == "Rifle Range (45 Points)") {
@@ -363,13 +362,11 @@ startup
 	addMissionHeaderStart("Phil Cassidy", false, "Phil Cassidy");
 
 	// Adding mission start settings for singleton assets and storing in missionStartList.
-	foreach (var mission in vars.mission2)
-	{
+	foreach (var mission in vars.mission2) {
 		var missionName = mission.Key;
 		if (missionName == "Rifle Range (45 Points)") {
 			continue; // Skip Rifle Range.
 		}
-
 		var splitName = missionName;
 		// Set the correct names for Pole Position.
 		if (missionName == "Pole Position ($300 Spent)") {
@@ -383,10 +380,10 @@ startup
 				splitName = missionName.Substring(0, paranthesisIndex);
 			}
 		}
-
 		settings.Add(splitName + " (start)", false, missionName);
 		vars.missionStartList.Add(splitName + " (start)");
 	}
+
 	// Adding SSA purchase setting and storing in missionStartList.
 	settings.Add("Sunshine Autos (start)", false, "Sunshine Autos (purchase)");
 	vars.missionStartList.Add("Sunshine Autos (start)");
@@ -403,8 +400,7 @@ startup
 	// Collectibles (Packages, Rampages, USJs, Robberies, and Properties/Safehouses).
 	settings.CurrentDefaultParent = "Collectibles";
 	addMissionHeader("Safehouses", false, "Safehouses");
-	foreach (var item in vars.collectibles)
-	{
+	foreach (var item in vars.collectibles) {
 		// Add seperate settings depending on player preference. Split for each collectible gathered, or when all are gathered.
 		settings.Add(item.Key + "All", false, item.Key + " (All Done)");
 		settings.Add(item.Key + "Each", false, item.Key + " (Each)");
@@ -441,30 +437,26 @@ init
 	// ----------------------------------------
 
 	// Detects current game version if Steam.
-	if (modules.First().ModuleMemorySize == 6905856)
-	{
+	if (modules.First().ModuleMemorySize == 6905856) {
 		version = "Steam";
 		vars.offset = -0xFF8;
 	}
 
-	else if (modules.First().ModuleMemorySize == 6553600)
-	{
+	else if (modules.First().ModuleMemorySize == 6553600) {
 		version = "Steam";
 		vars.offset = -0xFF8;
 	}
 
 	// Detects current game version if RU Steam (also maybe detects 1.1?).
 	// Russian Steam version uses the same stuff as 1.1.
-	else if (modules.First().ModuleMemorySize == 6840320)
-	{
+	else if (modules.First().ModuleMemorySize == 6840320) {
 		version = "1.1";
 		vars.offset = 8;
 	}
 
-	else { //
-		// Detects current game version if not Steam.
-		switch ((int)current.gameVersion)
-		{
+	// Detects current game version if not Steam.
+	else {
+		switch ((int)current.gameVersion) {
 			case 93:
 				version = "1.0";
 				vars.offset = 0;
@@ -489,10 +481,10 @@ init
 	foreach (var address in vars.missionAddresses) {
 		foreach (var m in address.Value) {
 			if (address.Key == "RC Top-Fun" && vars.offset == -0x2FF8) { // RC mission offsets are different from all other addresses in JP.
-			vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key + vars.offset + 8)) { Name = m.Value });
+				vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key + vars.offset + 8)) { Name = m.Value });
 			}
 			else {
-			vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key + vars.offset)) { Name = m.Value });
+				vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(m.Key + vars.offset)) { Name = m.Value });
 			}
 		}
 	}
@@ -506,11 +498,7 @@ init
 	foreach (var item in vars.collectibles) {
 		var type = item.Key;
 		var addr = item.Value + vars.offset;
-		vars.memoryWatchers.Add(
-			new MemoryWatcher<int>(
-				new DeepPointer(addr)
-			) { Name = type }
-		);
+		vars.memoryWatchers.Add(new MemoryWatcher<int>(new DeepPointer(addr)) { Name = type });
 	}
 
 	// Add correct memory address for the "game state" to the watcher list.
@@ -571,10 +559,8 @@ update
 	vars.memoryWatchers.UpdateAll(game);
 
 	// Reset some variables when the timer is started, so we don't need to rely on the start action in this script.
-	if (timer.CurrentPhase != vars.prevPhase)
-	{
-		if (timer.CurrentPhase == TimerPhase.NotRunning)
-		{
+	if (timer.CurrentPhase != vars.prevPhase) {
+		if (timer.CurrentPhase == TimerPhase.NotRunning) {
 			vars.split.Clear();
 			vars.queuedSplit = false;
 			vars.DebugOutput = ("Cleared completed splits");
@@ -595,15 +581,13 @@ split
 	if (Environment.TickCount - vars.lastLoad < 1000) {
 		// Prevent splitting shortly after loading from a save, since this can
 		// sometimes occur because memory values change
-		if (!vars.waiting)
-		{
+		if (!vars.waiting) {
 			//print("Wait..");
 			vars.waiting = true;
 		}
 		return false;
 	}
-	if (vars.waiting)
-	{
+	if (vars.waiting) {
 		//print("Done waiting..");
 		vars.waiting = false;
 	}
@@ -648,8 +632,8 @@ split
 	foreach (var item in vars.collectibleList) {
 		var cvalue = vars.memoryWatchers[item.ToString()];
 		if (cvalue.Current > cvalue.Old) {
-			if (settings[item + "All"]) // Adjusting the max count for each collectible type based on what we want to split.
-			{
+			if (settings[item + "All"]) {
+				// Adjusting the max count for each collectible type based on what we want to split.
 				int max = 15;
 				if (item == "Rampages") {
 					max = 35;
