@@ -738,9 +738,8 @@ split
 		vars.doSplit = true;
 	}
 
-	if (vars.doSplit) {
-		return true;
-	}
+	// Finally, if any of the split conditions had been met, trigger the split action.
+	return vars.doSplit;
 }
 
 start
